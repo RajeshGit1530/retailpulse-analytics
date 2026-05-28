@@ -1,0 +1,13 @@
+category,department,subcategory,is_seasonal,profit_margin_pct,display_order
+Electronics,Technology,Smartphones,false,25,1
+Electronics,Technology,Laptops,false,22,2
+Electronics,Technology,Headphones,false,35,3
+Electronics,Technology,Smartwatches,false,30,4
+Electronics,Technology,E-Readers,false,28,5
+Electronics,Technology,Misc,false,20,6
+Clothing,Fashion,Footwear,true,45,7
+Clothing,Fashion,Tops,true,50,8
+Clothing,Fashion,Bottoms,true,48,9
+Home,Lifestyle,Kitchen,false,35,10
+Home,Lifestyle,Cleaning,false,32,11
+Home,Lifestyle,Appliances,false,28,12

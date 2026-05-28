@@ -1,0 +1,7 @@
+status_code,status_label,is_complete,is_revenue_generating,sort_order
+PENDING,Order Pending,false,false,1
+CONFIRMED,Order Confirmed,false,true,2
+SHIPPED,Order Shipped,false,true,3
+DELIVERED,Order Delivered,true,true,4
+CANCELLED,Order Cancelled,true,false,5
+RETURNED,Order Returned,true,false,6
