@@ -63,7 +63,9 @@ final as (
         -- metadata
         o.created_at,
         o.updated_at,
-        o.dbt_loaded_at
+        o.dbt_loaded_at,
+        o.order_processing_days,
+        o.delivery_days
 
     from orders o
     left join order_items_summary oi
