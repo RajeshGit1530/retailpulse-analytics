@@ -1,0 +1,71 @@
+version: 2
+
+models:
+  - name: stg_orders
+    description: "Cleaned orders data"
+    columns:
+      - name: order_id
+        tests:
+          - unique
+          - not_null
+      - name: total_amount
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments:
+                min_value: 0
+                max_value: 10000000
+              config:
+                severity: warn
+      - name: order_status
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['PENDING','CONFIRMED','SHIPPED',
+                         'DELIVERED','CANCELLED','RETURNED']
+              config:
+                severity: error
+
+  - name: stg_products
+    columns:
+      - name: product_id
+        tests:
+          - unique
+          - not_null
+      - name: selling_price
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments:
+                min_value: 0
+                max_value: 1000000
+              config:
+                severity: warn
+      - name: profit_margin_pct
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments:
+                min_value: 0
+                max_value: 100
+              config:
+                severity: warn
+
+  - name: stg_customers
+    columns:
+      - name: customer_id
+        tests:
+          - unique
+          - not_null
+      - name: email
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_match_regex:
+              arguments:
+                regex: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+              config:
+                severity: warn
+      - name: customer_segment
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['BRONZE','SILVER','GOLD','PLATINUM']

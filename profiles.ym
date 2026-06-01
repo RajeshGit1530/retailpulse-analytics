@@ -1,0 +1,35 @@
+retailpulse:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account:   "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
+      user:      "{{ env_var('DBT_SNOWFLAKE_USER') }}"
+      password:  "{{ env_var('DBT_SNOWFLAKE_PASSWORD') }}"
+      role:      "{{ env_var('DBT_SNOWFLAKE_ROLE', 'DBT_DEV_ROLE') }}"
+      warehouse: "{{ env_var('DBT_SNOWFLAKE_WAREHOUSE', 'TRANSFORM_WH') }}"
+      database:  "{{ env_var('DBT_SNOWFLAKE_DATABASE', 'RETAILPULSE_DEV') }}"
+      schema:    "{{ env_var('DBT_SNOWFLAKE_SCHEMA', 'DEV_RAJESH') }}"
+      threads: 4
+
+    ci:
+      type: snowflake
+      account:   "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
+      user:      "{{ env_var('DBT_SNOWFLAKE_USER') }}"
+      password:  "{{ env_var('DBT_SNOWFLAKE_PASSWORD') }}"
+      role:      DBT_DEV_ROLE
+      warehouse: TRANSFORM_WH
+      database:  RETAILPULSE_DEV
+      schema:    "CI_{{ env_var('PR_NUMBER', '0') }}"
+      threads: 4
+
+    prod:
+      type: snowflake
+      account:   "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
+      user:      "{{ env_var('DBT_SNOWFLAKE_USER') }}"
+      password:  "{{ env_var('DBT_SNOWFLAKE_PASSWORD') }}"
+      role:      DBT_PROD_ROLE
+      warehouse: TRANSFORM_WH
+      database:  RETAILPULSE_PROD
+      schema:    STAGING
+      threads: 8

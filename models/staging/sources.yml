@@ -1,0 +1,60 @@
+version: 2
+
+sources:
+  - name: retailpulse_landing
+    description: "Raw source data landing zone from operational systems"
+    database: "{{ env_var('DBT_DATABASE', 'RETAILPULSE_DEV') }}"
+    schema: LANDING
+
+    tables:
+      - name: raw_customers
+        description: "Raw customer data from CRM system"
+        columns:
+          - name: customer_id
+            description: "Primary key - unique customer identifier"
+            tests:
+              - unique
+              - not_null
+          - name: email
+            tests:
+              - not_null
+
+      - name: raw_stores
+        description: "Raw store data from store management system"
+        columns:
+          - name: store_id
+            tests:
+              - unique
+              - not_null
+
+      - name: raw_products
+        description: "Raw product catalog data"
+        columns:
+          - name: product_id
+            tests:
+              - unique
+              - not_null
+
+      - name: raw_promotions
+        description: "Raw promotions data from marketing system"
+        columns:
+          - name: promotion_id
+            tests:
+              - unique
+              - not_null
+
+      - name: raw_orders
+        description: "Raw orders from order management system"
+        columns:
+          - name: order_id
+            tests:
+              - unique
+              - not_null
+
+      - name: raw_order_items
+        description: "Raw order line items"
+        columns:
+          - name: order_item_id
+            tests:
+              - unique
+              - not_null
