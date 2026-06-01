@@ -1,0 +1,53 @@
+name: dbt CI Pipeline
+
+on:
+  pull_request:
+    branches:
+      - dev
+      - main
+    paths:
+      - 'models/**'
+      - 'tests/**'
+      - 'macros/**'
+      - 'snapshots/**'
+      - 'seeds/**'
+      - 'dbt_project.yml'
+      - 'packages.yml'
+
+jobs:
+  dbt-ci:
+    name: dbt Build and Test
+    runs-on: ubuntu-latest
+
+    env:
+      DBT_SNOWFLAKE_ACCOUNT:   ${{ secrets.DBT_SNOWFLAKE_ACCOUNT }}
+      DBT_SNOWFLAKE_USER:      ${{ secrets.DBT_SNOWFLAKE_USER }}
+      DBT_SNOWFLAKE_PASSWORD:  ${{ secrets.DBT_SNOWFLAKE_PASSWORD }}
+      DBT_SNOWFLAKE_ROLE:      DBT_DEV_ROLE
+      DBT_SNOWFLAKE_WAREHOUSE: TRANSFORM_WH
+      DBT_SNOWFLAKE_DATABASE:  RETAILPULSE_DEV
+      DBT_SNOWFLAKE_SCHEMA:    CI_${{ github.event.pull_request.number }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dbt
+        run: |
+          pip install dbt-snowflake==1.7.0
+
+      - name: Install dbt packages
+        run: dbt deps
+
+      - name: Run dbt build (Slim CI)
+        run: |
+          dbt build \
+            --select state:modified+ \
+            --defer \
+            --state ./target \
+            --target ci
