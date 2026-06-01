@@ -1,0 +1,39 @@
+version: 2
+
+exposures:
+
+  - name: sales_dashboard
+    type: dashboard
+    maturity: high
+    description: "Daily sales performance dashboard for leadership team"
+    owner:
+      name: Rajesh Thotakura
+      email: rajesh.thotakura1530@gmail.com
+    depends_on:
+      - ref('rpt_sales_summary')
+      - ref('fct_orders')
+      - ref('dim_date')
+      - ref('dim_stores')
+
+  - name: customer_analytics
+    type: dashboard
+    maturity: medium
+    description: "Customer lifetime value and segmentation dashboard"
+    owner:
+      name: Rajesh Thotakura
+      email: rajesh.thotakura1530@gmail.com
+    depends_on:
+      - ref('rpt_customer_ltv')
+      - ref('dim_customers')
+
+  - name: product_performance
+    type: dashboard
+    maturity: medium
+    description: "Product performance and margin analysis dashboard"
+    owner:
+      name: Rajesh Thotakura
+      email: rajesh.thotakura1530@gmail.com
+    depends_on:
+      - ref('rpt_product_performance')
+      - ref('dim_products')
+      - ref('fct_order_items')
